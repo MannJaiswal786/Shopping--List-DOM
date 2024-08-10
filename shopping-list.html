@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List App</title>
+    <style>
+ul {
+    list-style-type: "\2610";
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+    <h1>My Shopping CheckList -by Mann Jaiswal</h1>
+    <form id="myForm">
+        <label for="item">Add an item:</label>
+        <input type="text" id="item" name="item">
+        <button onclick="getItem()">Add</button>
+    </form>
+    <ul id="shoppingList">
+<!--List items will go here through DOM manipulation using JS-->
+    </ul>
+    <script>
+// JS code for adding and removing items through DOM manipulation
+let shoppingList = [];
+const list = document.getElementById('shoppingList');
+function getItem() {
+event.preventDefault();
+
+try{
+
+const item = document.getElementById('item').value;
+
+if (item === ""){
+    throw new error("Item cannot be an empty string");
+}
+
+// check if the item exists in the array
+if (!shoppingList.includes(item) && item != "") {
+// add the item to the array
+shoppingList.push(item);
+
+// sort the array to keep it alphabetically ordered
+shoppingList.sort();
+
+// clear the form to have the user enter another item
+document.getElementById('myForm').reset();
+}
+// Logging the shoppingList array to test out the items 
+console.log(shoppingList);
+
+makeList();
+}
+catch(error) {
+console.error("Error in getItem: " + error.message);
+alert(error.message);
+}}
+
+function makeList(){
+    // clear the current list items
+    list.innerHTML= "";
+
+    for (let item of shoppingList) {
+        const listItem = document.createElement('li');
+        listItem.textContent = item;
+
+        listItem.addEventListener("click", removeItem);
+
+        //Appending the list item to the shopping list
+        list.appendChild(listItem);
+    }
+}
+
+function removeItem(event){
+     // Extract the value of the clicked list item
+const item = event.currentTarget.textContent;
+
+// Finding the index of the item in the array of Shopping List
+const index = shoppingList.indexOf(item);
+
+// Remove the item from the array if the item that is clicked exists
+if (index > -1) {
+    shoppingList.splice(index, 1);
+
+    makeList();
+}
+}
+    </script>
+</body>
+</html>
